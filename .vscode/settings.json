@@ -1,0 +1,5 @@
+{
+    "solidity.defaultCompiler": "remote",
+    "solidity.compileUsingRemoteVersion": "v0.5.16+commit.9c3226ce",
+    "solidity.compileUsingLocalVersion": "/home/peter/webdev/PoolParty/contracts/presale/soljson-v0.5.12+commit.7709ece9.js"
+}
