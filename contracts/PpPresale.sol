@@ -126,7 +126,7 @@ contract __unstable__TokenVault is Secondary {
 contract PpPresale is Crowdsale, TimedCrowdsale, PostDeliveryCrowdsale, CappedCrowdsale {
     using SafeMath for uint256;
     uint256 private _openingTime = 1634313600; // Fri Oct 15 2021 16:00:00 GMT+0000
-    uint256 private _closingTime = 1634486400; // Sun Oct 17 2021 16:00:00 GMT+0000 
+    uint256 private _closingTime = 1634400000; // Sat Oct 16 2021 16:00:00 GMT+0000 
     address public PPTokenAddress = 0xD4b52510719C594514CE7FED6CC876C03278cCf8; 
     uint256 private _rate = 950000; // PP/BNB rate
     constructor ()
