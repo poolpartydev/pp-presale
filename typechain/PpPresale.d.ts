@@ -38,7 +38,6 @@ interface PpPresaleInterface extends ethers.utils.Interface {
     "openingTime()": FunctionFragment;
     "owner()": FunctionFragment;
     "rate()": FunctionFragment;
-    "receiverAddress()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
     "token()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
@@ -82,10 +81,6 @@ interface PpPresaleInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(functionFragment: "rate", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "receiverAddress",
-    values?: undefined
-  ): string;
   encodeFunctionData(
     functionFragment: "renounceOwnership",
     values?: undefined
@@ -140,10 +135,6 @@ interface PpPresaleInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "rate", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "receiverAddress",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "renounceOwnership",
     data: BytesLike
@@ -285,8 +276,6 @@ export class PpPresale extends BaseContract {
 
     rate(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    receiverAddress(overrides?: CallOverrides): Promise<[string]>;
-
     renounceOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -359,8 +348,6 @@ export class PpPresale extends BaseContract {
 
   rate(overrides?: CallOverrides): Promise<BigNumber>;
 
-  receiverAddress(overrides?: CallOverrides): Promise<string>;
-
   renounceOwnership(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -427,8 +414,6 @@ export class PpPresale extends BaseContract {
     owner(overrides?: CallOverrides): Promise<string>;
 
     rate(overrides?: CallOverrides): Promise<BigNumber>;
-
-    receiverAddress(overrides?: CallOverrides): Promise<string>;
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
 
@@ -565,8 +550,6 @@ export class PpPresale extends BaseContract {
 
     rate(overrides?: CallOverrides): Promise<BigNumber>;
 
-    receiverAddress(overrides?: CallOverrides): Promise<BigNumber>;
-
     renounceOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -647,8 +630,6 @@ export class PpPresale extends BaseContract {
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     rate(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    receiverAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }

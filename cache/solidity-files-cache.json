@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/home/peter/webdev/PoolParty/contracts/presale/contracts/PpPresale.sol": {
-      "lastModificationDate": 1634152211462,
-      "contentHash": "9cb4b0009e0d98e57d65d466f6c47af6",
+      "lastModificationDate": 1634154272304,
+      "contentHash": "fe9232333d3e71bbd280f9329ef51340",
       "sourceName": "contracts/PpPresale.sol",
       "solcConfig": {
         "version": "0.5.16",

@@ -42,7 +42,8 @@ contract PostDeliveryCrowdsale is TimedCrowdsale, Ownable {
     }
 
     /**
-        Call to finalize presale
+        @notice Call to finalize presale
+        @dev Once the presale is finalized and time's over, everyone can claim their tokens
      */
     function finalize() external onlyOwner {
         finalized = true;
@@ -83,15 +84,31 @@ contract PostDeliveryCrowdsale is TimedCrowdsale, Ownable {
         _deliverTokens(address(vault), tokenAmount);
     }
 
+    /**
+        @notice Whitelists provided address
+        @param _account Address to be whitelisted
+     */
     function whitelistAddress(address _account) external onlyOwner {
         whitelisted[_account] = true;
     }
 
+    /**
+        @notice Whitelists provided addresses
+     */
     function whitelistMultipleAddresses(address[] calldata _accounts) external onlyOwner {
         for (uint256 index = 0; index < _accounts.length; index++) {
             whitelisted[_accounts[index]] = true;
         }
     }
+
+    /**
+        @notice Withdraws unsold token which can be then burned, or locked in the treasury
+     */
+    function withdrawUnsold() external onlyOwner {
+        require(hasClosed(), "Presale is still active!");
+        IERC20(token()).transfer(owner(), IERC20(token()).balanceOf(address(this)));
+    }
+
 }
 
 /**
