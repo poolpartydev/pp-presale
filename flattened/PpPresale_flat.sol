@@ -999,16 +999,20 @@ contract PostDeliveryCrowdsale is TimedCrowdsale, Ownable {
     mapping(address => uint256) public balances;
     __unstable__TokenVault public vault;
 
-    bool finalized = false;
+    bool public finalized = false;
 
     mapping(address => bool) public whitelisted;
+
+    // MAX CONTRIBUTION: 950k PP = 1 BNB
+    uint256 public maxContributionInToken = 950000 * (10**18);
 
     constructor() public {
         vault = new __unstable__TokenVault();
     }
 
     /**
-        Call to finalize presale
+        @notice Call to finalize presale
+        @dev Once the presale is finalized and time's over, everyone can claim their tokens
      */
     function finalize() external onlyOwner {
         finalized = true;
@@ -1044,19 +1048,36 @@ contract PostDeliveryCrowdsale is TimedCrowdsale, Ownable {
      */
     function _processPurchase(address beneficiary, uint256 tokenAmount) internal {
         require(whitelisted[beneficiary], "Address not whitelisted!");
+        require(balances[beneficiary].add(tokenAmount) <= maxContributionInToken, "Purchased amount exceeds max contribution!");
         balances[beneficiary] = balances[beneficiary].add(tokenAmount);
         _deliverTokens(address(vault), tokenAmount);
     }
 
+    /**
+        @notice Whitelists provided address
+        @param _account Address to be whitelisted
+     */
     function whitelistAddress(address _account) external onlyOwner {
         whitelisted[_account] = true;
     }
 
+    /**
+        @notice Whitelists provided addresses
+     */
     function whitelistMultipleAddresses(address[] calldata _accounts) external onlyOwner {
         for (uint256 index = 0; index < _accounts.length; index++) {
             whitelisted[_accounts[index]] = true;
         }
     }
+
+    /**
+        @notice Withdraws unsold token which can be then burned, or locked in the treasury
+     */
+    function withdrawUnsold() external onlyOwner {
+        require(hasClosed(), "Presale is still active!");
+        IERC20(token()).transfer(owner(), IERC20(token()).balanceOf(address(this)));
+    }
+
 }
 
 /**
@@ -1073,16 +1094,14 @@ contract __unstable__TokenVault is Secondary {
 
 contract PpPresale is Crowdsale, TimedCrowdsale, PostDeliveryCrowdsale, CappedCrowdsale {
     using SafeMath for uint256;
-    uint256 private _openingTime = 0; //TODO
-    uint256 private _closingTime = 0; //TODO
-    address public PPTokenAddress = address(0); //TODO
-    address payable public receiverAddress = address(0); //TODO
+    uint256 private _openingTime = 1634313600; // Fri Oct 15 2021 16:00:00 GMT+0000
+    uint256 private _closingTime = 1634400000; // Sat Oct 16 2021 16:00:00 GMT+0000 
+    address public PPTokenAddress = 0xD4b52510719C594514CE7FED6CC876C03278cCf8; 
     uint256 private _rate = 950000; // PP/BNB rate
-
     constructor ()
-     CappedCrowdsale(10**18) //max contribution: 1BNB
+     CappedCrowdsale(200 * (10**18)) //HARDCAP 200 BNB
      TimedCrowdsale(_openingTime, _closingTime)
-     Crowdsale(_rate, receiverAddress, IERC20(PPTokenAddress))
+     Crowdsale(_rate, msg.sender, IERC20(PPTokenAddress))
      PostDeliveryCrowdsale()
      public
     {}
